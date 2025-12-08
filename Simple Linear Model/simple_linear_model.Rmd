@@ -12,5 +12,5 @@ knitr::opts_chunk$set(echo = TRUE)
 Prove $\sum f(x)$ exists!
 
 ```{r}
-rnorm(1)
+rnorm(2)
 ```
