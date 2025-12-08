@@ -1,0 +1,16 @@
+---
+title: "Simple Linear Model"
+author: "Louis Charistias Saragih"
+date: "2025-12-08"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Prove $\sum f(x)$ exists!
+
+```{r}
+rnorm(1)
+```
