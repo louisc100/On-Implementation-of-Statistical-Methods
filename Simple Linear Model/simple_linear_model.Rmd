@@ -9,8 +9,11 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Prove $\sum f(x)$ exists!
+Prove $$\sum_{x \in S} f(x)$$ exists!
 
 ```{r}
-rnorm(2)
+N = 10000
+rand = rnorm(N)
+x = seq(from = 0, to = 2*pi, length.out = N)
+plot(1:N, sin(x) + rand)
 ```
