@@ -1,19 +1,62 @@
 ---
 title: "Simple Linear Model"
-author: "Louis Charistias Saragih"
-date: "2025-12-08"
 output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(MASS)
 ```
 
-Prove $$\sum_{x \in S} f(x)$$ exists!
+# Context
+
+Suppose we have some observations, there are various ways we can find relationship within that data. Here, we will implement the most basic statistical learning method, a simple linear model to a dataset. The dataset we will use is the `student_exam_scores.csv`, in which we will analyze the relation of student exam scores with some features/covariates.
+
+# Formulation
+
+Linear model has the following form for 1-dimensional input and one continuous output $$Y = \beta_0 + \beta_1 X + \epsilon$$ where $\epsilon \sim N(0, \sigma^2)$. More generally, we can write it in vector notation for more than one input $$Y = \vec{X}^T \vec{\beta} + \epsilon.$$The idea here is to find a linear line that "best fit" the given data/observations. Here, "best fit" means the one that minimizes the residual, i.e. the sum of squared difference between the value of observation and it's associated fitted value. Fortunately, `R` has a tool to implement this, which is `lm`.
+
+# Implementation
 
 ```{r}
-N = 10000
-rand = rnorm(N)
-x = seq(from = 0, to = 2*pi, length.out = N)
-plot(1:N, sin(x) + rand)
+student_data = read.csv2("student_exam_scores.csv", sep = ",")
+important_data <- student_data[,-1]
+
+important_data$hours_studied = as.numeric(important_data$hours_studied)
+important_data$sleep_hours = as.numeric(important_data$sleep_hours)
+important_data$attendance_percent = as.numeric(important_data$attendance_percent)
+important_data$previous_scores = as.numeric(important_data$previous_scores)
+important_data$exam_score = as.numeric(important_data$exam_score)
+
+model = lm(exam_score ~ ., data = important_data)
+summary(model)
 ```
+
+The table above gives information such as the estimated coefficient for the corresponding covariates, how much variation explained by the model, etc.
+
+However, we need to check whether our assumption of the noise to follow a normal distribution.
+
+```{r}
+plot(model)
+```
+
+The residual vs fitted values plot looks fine, however the QQ-plot is somehow a bit worse.
+
+We can also do prediction using the model we just created with example below
+
+```{r}
+input = data.frame(hours_studied = 12,
+                   sleep_hours = 9,
+                   attendance_percent = 95,
+                   previous_scores = 95)
+predict(model, input)
+```
+
+The student is predicted to obtain 52.23 for the exam.
+
+# Limitation
+
+-   The model is too simple
+
+-   
